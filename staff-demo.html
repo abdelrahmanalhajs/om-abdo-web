@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>لوحة الطلبات (تجريبية) · أم عبده</title>
+<meta name="robots" content="noindex">
+<style>
+:root{--g:#567856;--gd:#3F5E40;--gs:#EDF3EE;--bg:#F4F7F4;--card:#fff;--tx:#1F2E22;--mu:#6A776C;--bd:#DCE5DD;--red:#C0392B;--amber:#E0A100}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font-family:'Segoe UI',Tahoma,'Noto Sans Arabic',system-ui,sans-serif}
+button{font-family:inherit;cursor:pointer}
+.login{max-width:380px;margin:12vh auto;background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:28px;text-align:center}
+.login img{width:96px;height:96px;border-radius:50%}.login h1{margin:10px 0 18px;color:var(--gd);font-size:22px}
+.login select,.login input{width:100%;padding:12px;border:1px solid var(--bd);border-radius:12px;font-size:16px;margin-bottom:10px;font-family:inherit;background:#fff}
+.btn{background:var(--g);color:#fff;border:0;border-radius:12px;padding:11px 18px;font-weight:700;font-size:15px}
+.btn.big{width:100%;padding:13px}.btn.ghost{background:#fff;color:var(--gd);border:1px solid var(--bd)}.btn.red{background:var(--red)}
+.err{color:var(--red);min-height:20px;margin:6px 0}
+header{position:sticky;top:0;z-index:5;background:var(--g);color:#fff;padding:10px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+header b{font-size:18px}header .sp{flex:1}
+header .btn{background:rgba(255,255,255,.18);padding:7px 12px;font-size:14px}header .btn.on{background:#fff;color:var(--gd)}
+.tabs{display:flex;gap:6px}
+.board{display:grid;grid-template-columns:repeat(4,minmax(240px,1fr));gap:12px;padding:14px;align-items:start;overflow-x:auto}
+.col h2{font-size:15px;margin:0 0 8px;color:var(--gd);display:flex;justify-content:space-between}
+.col h2 span{background:var(--gs);border-radius:10px;padding:0 10px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:12px;margin-bottom:10px}
+.card.new{border:2px solid var(--amber);animation:pulse 1.2s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 6px rgba(224,161,0,.25)}}
+.card .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.id{font-weight:800}.age{font-size:12px;color:var(--mu)}.age.late{color:var(--red);font-weight:700}
+.items{margin:8px 0;padding:8px;background:var(--gs);border-radius:10px;font-size:14px;line-height:1.7}
+.kv{font-size:13px;color:var(--mu);margin:2px 0}.kv b{color:var(--tx)}
+.pay{display:inline-block;border-radius:8px;padding:2px 8px;font-size:12px;font-weight:700;margin-top:4px}
+.pay.cod{background:#FFF4D6;color:#8A6500}.pay.paid{background:#DFF3E3;color:#1D6B2C}
+.acts{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}.acts .btn{flex:1;padding:9px 6px;font-size:14px}
+a{color:var(--gd)}.empty{color:var(--mu);text-align:center;padding:30px}
+.hist{padding:14px;max-width:900px;margin:0 auto}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden}th,td{padding:10px;border-bottom:1px solid var(--bd);text-align:start;font-size:14px}th{background:var(--gs)}
+#ticket{display:none}
+@media (max-width:900px){.board{grid-template-columns:1fr}}
+@media print{body *{visibility:hidden}#ticket,#ticket *{visibility:visible}#ticket{display:block;position:absolute;inset:0;width:72mm;font:14px/1.5 monospace;color:#000;direction:rtl;padding:2mm}
+#ticket h3{margin:0;text-align:center}#ticket hr{border:0;border-top:1px dashed #000}}
+</style>
+</head>
+<body>
+<script>
+/* DEMO MODE: no server. Sample data lives in the page and resets on reload. */
+(function(){
+  var now=Date.now(),n=0,FLOW={new:['accepted','cancelled'],accepted:['preparing','cancelled'],preparing:['ready','cancelled'],ready:['out'],out:['delivered']};
+  var NAMES=['أحمد محمد','سارة علي','محمود حسن','منى إبراهيم','كريم يوسف'],ST=['شارع التسعين','حي الأندلس','مدينتي','الرحاب','القاهرة الجديدة'];
+  var ITEMS=['مشلتت كبير × 1 = 595 ج.م','بلاتر فطار ام عبده المميز الفلاحى × 1 = 192 ج.م','مشلتت وسط × 1 = 495 ج.م','فطيره سجق رول × 2 = 464 ج.م','علبه فول مصرى بنكهة × 1 = 52 ج.م'];
+  var orders=[];
+  function mk(min,kitchen,pm){n++;var it=[ITEMS[n%5],ITEMS[(n+2)%5]];return {id:'OA'+(1000+n*37).toString(16).toUpperCase()+'D'+n,branch:'tagamoa',kitchen:kitchen,createdAt:now-min*60000,paymentMethod:pm,paid:pm!=='cod',total:300+n*113,subtotal:300+n*113,fee:0,
+    customer:{name:NAMES[n%5],phone:'0101234'+(5000+n*91),address:ST[n%5]+'، عمارة '+(n+2)+'، الدور '+(n%4+1),notes:n%2?'من غير بصل':''},location:{lat:30.0094,lng:31.5242},items:it};}
+  orders.push(mk(2,'new','cod'),mk(1,'new','card'),mk(9,'accepted','cod'),mk(14,'preparing','wallet'),mk(22,'ready','cod'),mk(31,'out','instapay'),mk(70,'delivered','cod'));
+  var spawn=setInterval(function(){orders.push(mk(0,'new',['cod','card','applepay'][n%3]));if(n>12)clearInterval(spawn);},45000);
+  var real=window.fetch.bind(window);
+  function json(o,s){return Promise.resolve(new Response(JSON.stringify(o),{status:s||200,headers:{'Content-Type':'application/json'}}));}
+  window.fetch=function(url,opt){
+    url=String(url);if(url.indexOf('/staff/api')<0)return real(url,opt);
+    if(/\/login$/.test(url))return json({token:'demo',scope:'tagamoa'});
+    if(/\/orders$/.test(url))return json({scope:'tagamoa',branches:{tagamoa:'التجمع الخامس',obour:'العبور'},orders:orders.slice().sort(function(a,b){return b.createdAt-a.createdAt;})});
+    var m=/\/orders\/([^/]+)\/status$/.exec(url);if(m){var o=orders.find(function(x){return x.id===decodeURIComponent(m[1]);}),k=JSON.parse(opt.body).kitchen;
+      if(!o||(FLOW[o.kitchen]||[]).indexOf(k)<0)return json({error:'invalid_transition'},409);o.kitchen=k;return json(o);}
+    return json({error:'not_found'},404);};
+  try{localStorage.removeItem('omabdo.staff.token');}catch(e){}
+  window.addEventListener('DOMContentLoaded',function(){var b=document.createElement('div');b.style.cssText='background:#E0A100;color:#1F2E22;text-align:center;padding:6px;font:700 14px system-ui;position:sticky;top:0;z-index:20';b.textContent='نسخة تجريبية ببيانات وهمية — مش متصلة بطلبات حقيقية · اكتب أي كلمة سر للدخول · طلب جديد بيوصل كل 45 ثانية';document.body.prepend(b);});
+})();
+</script>
+<div id="app"></div>
+<div id="ticket"></div>
+<script>
+(function () {
+  var API = '/staff/api', TK = 'omabdo.staff.token', BR = 'omabdo.staff.branch';
+  var $ = function (s) { return document.querySelector(s); };
+  var app = $('#app');
+  var token = lsGet(TK), scope = null, branches = {}, orders = [], seen = null, sound = lsGet('omabdo.staff.sound') === '1', tab = 'live', timer = null, alarm = null, ctx = null;
+  var LABEL = { new: 'جديد', accepted: 'مقبول', preparing: 'بيتحضر', ready: 'جاهز', out: 'مع المندوب', delivered: 'تم التسليم', cancelled: 'ملغي' };
+  var PAY = { card: 'كارت', wallet: 'محفظة', applepay: 'Apple Pay', googlepay: 'Google Pay', instapay: 'إنستاباي', cod: 'كاش عند الاستلام' };
+
+  function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function lsSet(k, v) { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch (e) {} }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function api(path, opt) {
+    opt = opt || {}; opt.headers = Object.assign({ 'Content-Type': 'application/json' }, token ? { Authorization: 'Bearer ' + token } : {}, opt.headers || {});
+    return fetch(API + path, opt).then(function (r) { return r.json().catch(function () { return {}; }).then(function (b) { if (r.status === 401 && token) { logout(); } if (!r.ok) { var e = new Error(b.error || 'error'); e.code = b.error; throw e; } return b; }); });
+  }
+
+  // ---------- sound ----------
+  function beep() {
+    if (!sound) return;
+    try {
+      ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
+      [880, 1175, 880].forEach(function (f, i) {
+        var o = ctx.createOscillator(), g = ctx.createGain(); o.frequency.value = f; o.type = 'sine'; o.connect(g); g.connect(ctx.destination);
+        var t = ctx.currentTime + i * 0.22; g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.4, t + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.2); o.start(t); o.stop(t + 0.22);
+      });
+    } catch (e) {}
+  }
+  function manageAlarm() { // ring every 5s while any order is still "new"
+    var any = orders.some(function (o) { return o.kitchen === 'new'; });
+    if (any && sound && !alarm) alarm = setInterval(beep, 5000);
+    if ((!any || !sound) && alarm) { clearInterval(alarm); alarm = null; }
+    document.title = (any ? '(' + orders.filter(function (o) { return o.kitchen === 'new'; }).length + ') ' : '') + 'لوحة الطلبات · أم عبده';
+  }
+
+  // ---------- login ----------
+  function showLogin(msg) {
+    app.innerHTML = '<div class="login"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="" style="display:none"><h1>🍽️ لوحة طلبات أم عبده</h1>' +
+      '<select id="br"><option value="tagamoa">فرع التجمع الخامس</option><option value="obour">فرع العبور</option><option value="admin">الإدارة (كل الفروع)</option></select>' +
+      '<input id="pw" type="password" placeholder="كلمة السر" autocomplete="current-password"><div class="err" id="err">' + esc(msg || '') + '</div><button class="btn big" id="go">دخول</button></div>';
+    var br = lsGet(BR); if (br) $('#br').value = br;
+    var submit = function () {
+      api('/login', { method: 'POST', body: JSON.stringify({ branch: $('#br').value, password: $('#pw').value }) }).then(function (r) {
+        token = r.token; lsSet(TK, token); lsSet(BR, $('#br').value); sound = true; lsSet('omabdo.staff.sound', '1'); seen = null; start();
+      }).catch(function (e) { $('#err').textContent = { wrong_password: 'كلمة السر غلط', not_configured: 'الفرع ده لسه ملوش كلمة سر على السيرفر', too_many_attempts: 'محاولات كتير، جرّب بعد شوية' }[e.code] || 'تعذر الدخول'; });
+    };
+    $('#go').onclick = submit; $('#pw').onkeydown = function (e) { if (e.key === 'Enter') submit(); };
+  }
+  function logout() { token = null; lsSet(TK, null); clearInterval(timer); timer = null; if (alarm) { clearInterval(alarm); alarm = null; } showLogin(); }
+
+  // ---------- data ----------
+  function refresh() {
+    return api('/orders').then(function (r) {
+      scope = r.scope; branches = r.branches; var prev = seen; orders = r.orders;
+      var ids = {}; orders.forEach(function (o) { ids[o.id] = 1; });
+      if (prev) { var fresh = orders.filter(function (o) { return !prev[o.id] && o.kitchen === 'new'; }); if (fresh.length) { beep(); } }
+      seen = ids; render(); manageAlarm();
+    }).catch(function () {});
+  }
+  function start() { render(); refresh(); clearInterval(timer); timer = setInterval(refresh, 4000); }
+  function setStatus(id, kitchen) {
+    if (kitchen === 'cancelled') { var o = orders.find(function (x) { return x.id === id; }); if (!confirm('تأكيد إلغاء الطلب ' + id + '؟' + (o && o.paid ? '\nالطلب مدفوع أونلاين، لازم ترجّع الفلوس يدويًا.' : ''))) return; }
+    api('/orders/' + encodeURIComponent(id) + '/status', { method: 'POST', body: JSON.stringify({ kitchen: kitchen }) }).then(refresh).catch(function () { alert('تعذر تحديث الطلب، اتحدّث الصفحة وحاول تاني'); refresh(); });
+  }
+
+  // ---------- render ----------
+  function ago(ts) { var m = Math.floor((Date.now() - ts) / 60000); return m < 1 ? 'دلوقتي' : m < 60 ? 'من ' + m + ' دقيقة' : 'من ' + Math.floor(m / 60) + ' س ' + (m % 60) + ' د'; }
+  function money(n) { return (Math.round(n * 100) / 100) + ' ج.م'; }
+  var NEXT = { new: ['accepted', 'قبول الطلب'], accepted: ['preparing', 'بدء التحضير'], preparing: ['ready', 'جاهز'], ready: ['out', 'خرج للتوصيل'], out: ['delivered', 'تم التسليم'] };
+
+  function card(o) {
+    var late = o.kitchen !== 'out' && Date.now() - o.createdAt > 25 * 60000, n = NEXT[o.kitchen];
+    var c = o.customer || {}, map = o.location ? 'https://www.google.com/maps?q=' + o.location.lat + ',' + o.location.lng : 'https://www.google.com/maps/search/' + encodeURIComponent(c.address || '');
+    return '<div class="card ' + (o.kitchen === 'new' ? 'new' : '') + '"><div class="top"><span class="id">#' + esc(o.id) + (scope === 'admin' ? ' · ' + esc(branches[o.branch] || o.branch) : '') + '</span><span class="age ' + (late ? 'late' : '') + '">' + ago(o.createdAt) + '</span></div>' +
+      '<div class="kv"><b>' + esc(c.name) + '</b> · <a href="tel:' + esc(c.phone) + '">' + esc(c.phone) + '</a></div>' +
+      '<div class="kv">📍 ' + esc(c.address) + ' · <a href="' + esc(map) + '" target="_blank" rel="noopener">الخريطة</a></div>' +
+      (c.notes ? '<div class="kv">📝 <b>' + esc(c.notes) + '</b></div>' : '') +
+      '<div class="items">' + o.items.map(esc).join('<br>') + '</div>' +
+      '<div><b>' + money(o.total) + '</b> ' + (o.paymentMethod === 'cod' ? '<span class="pay cod">💵 حصّل ' + money(o.total) + ' كاش</span>' : '<span class="pay paid">✅ مدفوع · ' + esc(PAY[o.paymentMethod] || o.paymentMethod) + '</span>') + '</div>' +
+      '<div class="acts">' + (n ? '<button class="btn" data-a="' + n[0] + '" data-id="' + esc(o.id) + '">' + n[1] + '</button>' : '') +
+      '<button class="btn ghost" data-p="' + esc(o.id) + '">🖨️ طباعة</button>' +
+      (o.kitchen === 'new' || o.kitchen === 'accepted' || o.kitchen === 'preparing' ? '<button class="btn ghost" style="color:var(--red)" data-a="cancelled" data-id="' + esc(o.id) + '">إلغاء</button>' : '') + '</div></div>';
+  }
+
+  function render() {
+    if (!token) return;
+    var title = scope === 'admin' ? 'كل الفروع' : 'فرع ' + (branches[scope] || '');
+    var live = orders.filter(function (o) { return ['new', 'accepted', 'preparing', 'ready', 'out'].indexOf(o.kitchen) > -1; }).sort(function (a, b) { return a.createdAt - b.createdAt; });
+    var cols = [['new', 'جديد'], ['accepted', 'مقبول'], ['preparing', 'بيتحضر'], ['ready', 'جاهز'], ['out', 'مع المندوب']];
+    var body;
+    if (tab === 'live') {
+      body = '<div class="board" style="grid-template-columns:repeat(' + cols.length + ',minmax(240px,1fr))">' + cols.map(function (c) {
+        var list = live.filter(function (o) { return o.kitchen === c[0]; });
+        return '<div class="col"><h2>' + c[1] + ' <span>' + list.length + '</span></h2>' + (list.map(card).join('') || '<div class="empty">—</div>') + '</div>';
+      }).join('') + '</div>';
+    } else {
+      var done = orders.filter(function (o) { return o.kitchen === 'delivered' || o.kitchen === 'cancelled'; });
+      var sum = done.filter(function (o) { return o.kitchen === 'delivered'; }).reduce(function (s, o) { return s + o.total; }, 0);
+      body = '<div class="hist"><p><b>' + done.length + '</b> طلب في السجل · إجمالي المسلَّم: <b>' + money(sum) + '</b></p><table><tr><th>الطلب</th><th>الوقت</th><th>العميل</th><th>الإجمالي</th><th>الدفع</th><th>الحالة</th><th></th></tr>' +
+        (done.map(function (o) { return '<tr><td>#' + esc(o.id) + '</td><td>' + new Date(o.createdAt).toLocaleString('ar-EG') + '</td><td>' + esc(o.customer.name) + '<br><small>' + esc(o.customer.phone) + '</small></td><td>' + money(o.total) + '</td><td>' + esc(PAY[o.paymentMethod] || '') + '</td><td>' + LABEL[o.kitchen] + '</td><td><button class="btn ghost" data-p="' + esc(o.id) + '">🖨️</button></td></tr>'; }).join('') || '<tr><td colspan="7" class="empty">لا يوجد طلبات سابقة</td></tr>') + '</table></div>';
+    }
+    app.innerHTML = '<header><b>🍽️ ' + esc(title) + '</b><div class="tabs"><button class="btn ' + (tab === 'live' ? 'on' : '') + '" data-t="live">الطلبات النشطة (' + live.length + ')</button><button class="btn ' + (tab === 'hist' ? 'on' : '') + '" data-t="hist">السجل</button></div><span class="sp"></span>' +
+      '<button class="btn ' + (sound ? 'on' : '') + '" id="snd">' + (sound ? '🔔 الصوت شغال' : '🔕 الصوت مقفول') + '</button><button class="btn" id="out">خروج</button></header>' + body;
+  }
+
+  function printTicket(id) {
+    var o = orders.find(function (x) { return x.id === id; }); if (!o) return; var c = o.customer || {};
+    $('#ticket').innerHTML = '<h3>أم عبده</h3><div style="text-align:center">' + esc(branches[o.branch] || '') + '</div><hr><div><b>#' + esc(o.id) + '</b> · ' + new Date(o.createdAt).toLocaleString('ar-EG') + '</div><hr>' +
+      o.items.map(function (i) { return '<div>' + esc(i) + '</div>'; }).join('') + '<hr><div>الإجمالي: <b>' + money(o.total) + '</b></div><div>' + (o.paymentMethod === 'cod' ? 'كاش عند الاستلام: حصّل ' + money(o.total) : 'مدفوع · ' + esc(PAY[o.paymentMethod] || '')) + '</div><hr>' +
+      '<div>' + esc(c.name) + '</div><div>' + esc(c.phone) + '</div><div>' + esc(c.address) + '</div>' + (c.notes ? '<div>ملاحظات: ' + esc(c.notes) + '</div>' : '');
+    window.print();
+  }
+
+  app.addEventListener('click', function (e) {
+    var t = e.target.closest('button'); if (!t) return;
+    if (t.dataset.a) setStatus(t.dataset.id, t.dataset.a);
+    else if (t.dataset.p) printTicket(t.dataset.p);
+    else if (t.dataset.t) { tab = t.dataset.t; render(); }
+    else if (t.id === 'snd') { sound = !sound; lsSet('omabdo.staff.sound', sound ? '1' : '0'); if (sound) beep(); render(); manageAlarm(); }
+    else if (t.id === 'out') logout();
+  });
+  setInterval(function () { if (token && tab === 'live') render(); }, 30000); // refresh the "minutes ago" labels
+
+  if (token) start(); else showLogin();
+})();
+</script>
+</body>
+</html>
