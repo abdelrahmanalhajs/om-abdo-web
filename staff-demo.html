@@ -5,40 +5,117 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>لوحة الطلبات (تجريبية) · أم عبده</title>
 <meta name="robots" content="noindex">
+<meta name="theme-color" content="#3F5E40">
 <style>
-:root{--g:#567856;--gd:#3F5E40;--gs:#EDF3EE;--bg:#F4F7F4;--card:#fff;--tx:#1F2E22;--mu:#6A776C;--bd:#DCE5DD;--red:#C0392B;--amber:#E0A100}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font-family:'Segoe UI',Tahoma,'Noto Sans Arabic',system-ui,sans-serif}
-button{font-family:inherit;cursor:pointer}
-.login{max-width:380px;margin:12vh auto;background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:28px;text-align:center}
-.login img{width:96px;height:96px;border-radius:50%}.login h1{margin:10px 0 18px;color:var(--gd);font-size:22px}
-.login select,.login input{width:100%;padding:12px;border:1px solid var(--bd);border-radius:12px;font-size:16px;margin-bottom:10px;font-family:inherit;background:#fff}
-.btn{background:var(--g);color:#fff;border:0;border-radius:12px;padding:11px 18px;font-weight:700;font-size:15px}
-.btn.big{width:100%;padding:13px}.btn.ghost{background:#fff;color:var(--gd);border:1px solid var(--bd)}.btn.red{background:var(--red)}
-.err{color:var(--red);min-height:20px;margin:6px 0}
-header{position:sticky;top:0;z-index:5;background:var(--g);color:#fff;padding:10px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-header b{font-size:18px}header .sp{flex:1}
-header .btn{background:rgba(255,255,255,.18);padding:7px 12px;font-size:14px}header .btn.on{background:#fff;color:var(--gd)}
-.tabs{display:flex;gap:6px}
-.board{display:grid;grid-template-columns:repeat(4,minmax(240px,1fr));gap:12px;padding:14px;align-items:start;overflow-x:auto}
-.col h2{font-size:15px;margin:0 0 8px;color:var(--gd);display:flex;justify-content:space-between}
-.col h2 span{background:var(--gs);border-radius:10px;padding:0 10px}
-.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:12px;margin-bottom:10px}
-.card.new{border:2px solid var(--amber);animation:pulse 1.2s infinite}
-@keyframes pulse{50%{box-shadow:0 0 0 6px rgba(224,161,0,.25)}}
-.card .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
-.id{font-weight:800}.age{font-size:12px;color:var(--mu)}.age.late{color:var(--red);font-weight:700}
-.items{margin:8px 0;padding:8px;background:var(--gs);border-radius:10px;font-size:14px;line-height:1.7}
-.kv{font-size:13px;color:var(--mu);margin:2px 0}.kv b{color:var(--tx)}
-.pay{display:inline-block;border-radius:8px;padding:2px 8px;font-size:12px;font-weight:700;margin-top:4px}
-.pay.cod{background:#FFF4D6;color:#8A6500}.pay.paid{background:#DFF3E3;color:#1D6B2C}
-.acts{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}.acts .btn{flex:1;padding:9px 6px;font-size:14px}
-a{color:var(--gd)}.empty{color:var(--mu);text-align:center;padding:30px}
-.hist{padding:14px;max-width:900px;margin:0 auto}
-table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden}th,td{padding:10px;border-bottom:1px solid var(--bd);text-align:start;font-size:14px}th{background:var(--gs)}
+:root{--g:#567856;--gd:#3F5E40;--gs:#EDF3EE;--bg:#F3F6F3;--card:#fff;--tx:#1F2E22;--mu:#66736A;--bd:#DCE5DD;
+ --new:#E08A00;--news:#FFF3DC;--cook:#2F6FB5;--cooks:#E4EEF9;--ready:#2E8B57;--readys:#E2F4EA;--out:#7A4FB5;--outs:#EFE8F8;--red:#C0392B}
+html{font-size:16px}html.big{font-size:19px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:'Segoe UI',Tahoma,'Noto Sans Arabic',system-ui,sans-serif;line-height:1.5;-webkit-tap-highlight-color:transparent}
+button{font-family:inherit;cursor:pointer;border:0}
+a{color:inherit}
+.hide{display:none!important}
+
+/* ---------- login ---------- */
+.login{max-width:420px;margin:8vh auto;padding:0 16px}
+.login .box{background:var(--card);border:1px solid var(--bd);border-radius:22px;padding:28px 24px;text-align:center;box-shadow:0 8px 30px rgba(0,0,0,.06)}
+.login h1{margin:6px 0 4px;color:var(--gd);font-size:1.5rem}.login p{margin:0 0 18px;color:var(--mu)}
+.login label{display:block;text-align:start;font-weight:700;margin:12px 0 6px}
+.login select,.login input{width:100%;padding:14px;border:1.5px solid var(--bd);border-radius:14px;font-size:1.05rem;font-family:inherit;background:#fff}
+.login .err{color:var(--red);min-height:24px;margin:10px 0;font-weight:600}
+.btn{background:var(--g);color:#fff;border-radius:14px;padding:14px 20px;font-weight:800;font-size:1.05rem;min-height:52px}
+.btn.block{width:100%}.btn:active{filter:brightness(.92)}
+.btn.ghost{background:#fff;color:var(--gd);border:1.5px solid var(--bd);font-weight:700}
+.btn.danger{background:var(--red)}
+.btn.sm{min-height:44px;padding:10px 14px;font-size:.95rem}
+
+/* ---------- top bar ---------- */
+header{position:sticky;top:0;z-index:20;background:var(--gd);color:#fff}
+.top{display:flex;align-items:center;gap:10px;padding:10px 14px;flex-wrap:wrap}
+.top .brand{font-weight:800;font-size:1.15rem;margin-inline-end:auto}
+.pill{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.16);color:#fff;border-radius:22px;padding:8px 14px;font-size:.9rem;font-weight:700;min-height:40px}
+.pill.on{background:#fff;color:var(--gd)}
+.dot{width:10px;height:10px;border-radius:50%;background:#5BE08A;display:inline-block}.dot.off{background:#FF6B5E}
+.tabs{display:flex;gap:6px;padding:0 14px 10px;overflow-x:auto}
+.tabs button{flex:1;min-width:120px;background:rgba(255,255,255,.14);color:#fff;border-radius:12px;padding:12px 10px;font-weight:800;font-size:1rem}
+.tabs button.on{background:#fff;color:var(--gd)}
+.cnt{display:inline-block;min-width:24px;padding:0 7px;border-radius:12px;background:var(--new);color:#fff;font-size:.85rem;margin-inline-start:6px}
+
+/* ---------- banners ---------- */
+.banner{display:flex;gap:10px;align-items:center;justify-content:center;text-align:center;padding:14px;font-weight:800;font-size:1.05rem;width:100%}
+.banner.alert{background:var(--new);color:#fff;animation:blink 1.1s infinite}
+.banner.warn{background:#FDE8E5;color:var(--red);border-bottom:1px solid #F5C6C0}
+.banner.net{background:#FFF3DC;color:#8A5A00}
+@keyframes blink{50%{filter:brightness(1.15)}}
+
+/* ---------- stage selector (phones) ---------- */
+.stages{display:none;gap:8px;padding:12px 12px 0;overflow-x:auto}
+.stages button{flex:1;min-width:104px;background:#fff;border:2px solid var(--bd);border-radius:14px;padding:10px 6px;font-weight:800;color:var(--tx);font-size:.95rem}
+.stages button small{display:block;font-size:1.3rem;line-height:1.1}
+.stages button.on{border-color:currentColor}
+
+/* ---------- board ---------- */
+.board{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;padding:14px;align-items:start}
+.col h2{margin:0 0 10px;font-size:1.05rem;display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:12px}
+.col h2 b{margin-inline-start:auto;background:#fff;border-radius:12px;padding:0 10px;min-width:28px;text-align:center}
+.col.new h2{background:var(--news);color:var(--new)}.col.cook h2{background:var(--cooks);color:var(--cook)}
+.col.ready h2{background:var(--readys);color:var(--ready)}.col.out h2{background:var(--outs);color:var(--out)}
+.empty{color:var(--mu);text-align:center;padding:26px 12px;background:rgba(255,255,255,.6);border:2px dashed var(--bd);border-radius:16px;font-size:.95rem}
+@media (max-width:1180px){.board{grid-template-columns:1fr}.stages{display:flex}.col h2{display:none}.col.hidden-stage{display:none}.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px;align-items:start}.cards .card,.cards .empty{margin-bottom:0}.cards .empty{grid-column:1/-1}}
+
+/* ---------- order card ---------- */
+.card{background:var(--card);border:1px solid var(--bd);border-radius:18px;margin-bottom:14px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.card.new{border:3px solid var(--new);animation:glow 1.4s infinite}
+@keyframes glow{50%{box-shadow:0 0 0 7px rgba(224,138,0,.22)}}
+.ch{display:flex;align-items:center;gap:8px;padding:12px 14px;border-bottom:1px solid var(--bd)}
+.ch .id{font-weight:800;font-size:1.05rem}.ch .when{margin-inline-start:auto;font-weight:800;font-size:.9rem;padding:4px 10px;border-radius:10px;background:var(--gs);color:var(--gd)}
+.ch .when.warn{background:var(--news);color:var(--new)}.ch .when.late{background:#FDE8E5;color:var(--red)}
+.cb{padding:12px 14px}
+.who{font-weight:800;font-size:1.15rem}
+.row{display:flex;gap:8px;margin:10px 0 0;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--gs);color:var(--gd);border-radius:12px;padding:9px 14px;font-weight:700;text-decoration:none;font-size:.95rem;min-height:42px}
+.addr{margin:8px 0 0;color:var(--tx);font-size:1rem}
+.note{margin:10px 0 0;background:#FFF8DC;border:1.5px solid #F0D874;border-radius:12px;padding:10px 12px;font-weight:700}
+.items{margin:12px 0 0;border:1px solid var(--bd);border-radius:14px;overflow:hidden}
+.it{display:flex;gap:10px;align-items:center;padding:10px 12px;border-bottom:1px solid var(--bd);font-size:1.02rem}.it:last-child{border:0}
+.it .q{background:var(--gd);color:#fff;font-weight:800;border-radius:10px;min-width:38px;text-align:center;padding:2px 8px}
+.it .n{flex:1;font-weight:700}.it .p{color:var(--mu);font-weight:700;white-space:nowrap}
+.money{margin:12px 0 0;border-radius:14px;padding:12px 14px;font-weight:800;font-size:1.05rem}
+.money.cash{background:var(--news);color:#8A5A00;border:1.5px solid #F0CF86}
+.money.paid{background:var(--readys);color:#17663B;border:1.5px solid #B5E3C9}
+.money small{display:block;font-weight:600;opacity:.85}
+.ca{padding:0 14px 14px}
+.act{width:100%;border-radius:14px;padding:16px;font-weight:800;font-size:1.15rem;color:#fff;min-height:58px}
+.act.new{background:var(--new)}.act.cook{background:var(--cook)}.act.ready{background:var(--ready)}.act.out{background:var(--out)}
+.act:disabled{opacity:.55}
+.sub{display:flex;gap:8px;margin-top:10px}.sub button{flex:1}
+
+/* ---------- today / history ---------- */
+.wrap{max-width:980px;margin:0 auto;padding:14px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:16px}
+.stat{background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:16px}
+.stat span{display:block;color:var(--mu);font-weight:700;font-size:.95rem}.stat b{display:block;font-size:1.9rem;color:var(--gd);margin-top:2px}
+.stat.hl{background:var(--gd);border-color:var(--gd)}.stat.hl span,.stat.hl b{color:#fff}
+.panel{background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:16px;margin-bottom:16px}
+.panel h3{margin:0 0 10px;color:var(--gd)}
+.bar{display:flex;align-items:center;gap:10px;margin:8px 0;font-weight:700}.bar i{display:block;height:12px;border-radius:8px;background:var(--g);min-width:4px}.bar em{font-style:normal;color:var(--mu);margin-inline-start:auto}
+.find{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.find input{flex:1;min-width:200px;padding:14px;border:1.5px solid var(--bd);border-radius:14px;font-size:1rem;font-family:inherit}
+.find button{background:#fff;border:1.5px solid var(--bd);border-radius:14px;padding:12px 16px;font-weight:800;color:var(--tx)}.find button.on{background:var(--gd);color:#fff;border-color:var(--gd)}
+.h{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:14px;margin-bottom:10px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.h .main{flex:1;min-width:200px}.h b{font-size:1.05rem}.h small{color:var(--mu)}
+.tag{display:inline-block;border-radius:10px;padding:3px 10px;font-weight:800;font-size:.85rem}.tag.d{background:var(--readys);color:var(--ready)}.tag.c{background:#FDE8E5;color:var(--red)}
+
+/* ---------- toast / modal ---------- */
+#toast{position:fixed;inset-inline:0;bottom:18px;display:flex;justify-content:center;pointer-events:none;z-index:60}
+#toast div{background:#1F2E22;color:#fff;padding:14px 22px;border-radius:16px;font-weight:800;box-shadow:0 8px 24px rgba(0,0,0,.25);animation:up .25s}
+@keyframes up{from{transform:translateY(14px);opacity:0}}
+#modal{position:fixed;inset:0;background:rgba(20,30,22,.55);z-index:70;display:flex;align-items:center;justify-content:center;padding:18px}
+#modal .m{background:#fff;border-radius:22px;padding:22px;max-width:420px;width:100%;text-align:center}
+#modal h3{margin:0 0 8px;font-size:1.25rem}#modal p{margin:0 0 18px;color:var(--mu)}#modal .two{display:flex;gap:10px}#modal .two button{flex:1}
 #ticket{display:none}
-@media (max-width:900px){.board{grid-template-columns:1fr}}
-@media print{body *{visibility:hidden}#ticket,#ticket *{visibility:visible}#ticket{display:block;position:absolute;inset:0;width:72mm;font:14px/1.5 monospace;color:#000;direction:rtl;padding:2mm}
-#ticket h3{margin:0;text-align:center}#ticket hr{border:0;border-top:1px dashed #000}}
+@media (max-width:520px){.tabs button{min-width:0;padding:10px 4px;font-size:.88rem}.top .brand{font-size:1rem}}
+@media print{body *{visibility:hidden}#ticket,#ticket *{visibility:visible}#ticket{display:block;position:absolute;inset:0;width:72mm;font:14px/1.5 monospace;color:#000;direction:rtl;padding:2mm}#ticket h3{margin:0;text-align:center}#ticket hr{border:0;border-top:1px dashed #000}}
 </style>
 </head>
 <body>
@@ -48,11 +125,11 @@ table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;ove
   var now=Date.now(),n=0,FLOW={new:['accepted','cancelled'],accepted:['preparing','cancelled'],preparing:['ready','cancelled'],ready:['out'],out:['delivered']};
   var NAMES=['أحمد محمد','سارة علي','محمود حسن','منى إبراهيم','كريم يوسف'],ST=['شارع التسعين','حي الأندلس','مدينتي','الرحاب','القاهرة الجديدة'];
   var ITEMS=['مشلتت كبير × 1 = 595 ج.م','بلاتر فطار ام عبده المميز الفلاحى × 1 = 192 ج.م','مشلتت وسط × 1 = 495 ج.م','فطيره سجق رول × 2 = 464 ج.م','علبه فول مصرى بنكهة × 1 = 52 ج.م'];
-  var orders=[];
-  function mk(min,kitchen,pm){n++;var it=[ITEMS[n%5],ITEMS[(n+2)%5]];return {id:'OA'+(1000+n*37).toString(16).toUpperCase()+'D'+n,branch:'tagamoa',kitchen:kitchen,createdAt:now-min*60000,paymentMethod:pm,paid:pm!=='cod',total:300+n*113,subtotal:300+n*113,fee:0,
-    customer:{name:NAMES[n%5],phone:'0101234'+(5000+n*91),address:ST[n%5]+'، عمارة '+(n+2)+'، الدور '+(n%4+1),notes:n%2?'من غير بصل':''},location:{lat:30.0094,lng:31.5242},items:it};}
-  orders.push(mk(2,'new','cod'),mk(1,'new','card'),mk(9,'accepted','cod'),mk(14,'preparing','wallet'),mk(22,'ready','cod'),mk(31,'out','instapay'),mk(70,'delivered','cod'));
-  var spawn=setInterval(function(){orders.push(mk(0,'new',['cod','card','applepay'][n%3]));if(n>12)clearInterval(spawn);},45000);
+  var PRICE=[595,192,495,464,52],orders=[];
+  function mk(min,kitchen,pm){n++;var a=n%5,b=(n+2)%5,t=PRICE[a]+PRICE[b];return {id:'OA'+(1000+n*37).toString(16).toUpperCase()+'D'+n,branch:'tagamoa',kitchen:kitchen,createdAt:now-min*60000,paymentMethod:pm,paid:pm!=='cod',total:t,subtotal:t,fee:0,
+    customer:{name:NAMES[n%5],phone:'0101234'+(5000+n*91),address:ST[n%5]+'، عمارة '+(n+2)+'، الدور '+(n%4+1),notes:n%2?'من غير بصل':''},location:{lat:30.0094,lng:31.5242},items:[ITEMS[a],ITEMS[b]]};}
+  orders.push(mk(3,'new','cod'),mk(1,'new','card'),mk(9,'accepted','cod'),mk(14,'preparing','wallet'),mk(22,'ready','cod'),mk(31,'out','instapay'),mk(70,'delivered','cod'),mk(95,'delivered','card'),mk(120,'cancelled','cod'));
+  var spawn=setInterval(function(){orders.push(mk(0,'new',['cod','card','applepay'][n%3]));if(n>14)clearInterval(spawn);},45000);
   var real=window.fetch.bind(window);
   function json(o,s){return Promise.resolve(new Response(JSON.stringify(o),{status:s||200,headers:{'Content-Type':'application/json'}}));}
   window.fetch=function(url,opt){
@@ -63,133 +140,236 @@ table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;ove
       if(!o||(FLOW[o.kitchen]||[]).indexOf(k)<0)return json({error:'invalid_transition'},409);o.kitchen=k;return json(o);}
     return json({error:'not_found'},404);};
   try{localStorage.removeItem('omabdo.staff.token');}catch(e){}
-  window.addEventListener('DOMContentLoaded',function(){var b=document.createElement('div');b.style.cssText='background:#E0A100;color:#1F2E22;text-align:center;padding:6px;font:700 14px system-ui;position:sticky;top:0;z-index:20';b.textContent='نسخة تجريبية ببيانات وهمية — مش متصلة بطلبات حقيقية · اكتب أي كلمة سر للدخول · طلب جديد بيوصل كل 45 ثانية';document.body.prepend(b);});
+  window.addEventListener('DOMContentLoaded',function(){var b=document.createElement('div');b.style.cssText='background:#1F2E22;color:#fff;text-align:center;padding:8px 12px;font:700 14px system-ui;position:relative;z-index:80';b.textContent='🧪 نسخة تجريبية ببيانات وهمية — اكتب أي كلمة سر للدخول · طلب جديد بيوصل كل 45 ثانية · مفيش حاجة حقيقية بتتبعت';document.body.prepend(b);});
 })();
 </script>
 <div id="app"></div>
+<div id="toast"></div>
+<div id="modal" class="hide"></div>
 <div id="ticket"></div>
 <script>
 (function () {
-  var API = '/staff/api', TK = 'omabdo.staff.token', BR = 'omabdo.staff.branch';
+  var API = '/staff/api', TK = 'omabdo.staff.token', BR = 'omabdo.staff.branch', SK = 'omabdo.staff.sound', FK = 'omabdo.staff.big';
   var $ = function (s) { return document.querySelector(s); };
   var app = $('#app');
-  var token = lsGet(TK), scope = null, branches = {}, orders = [], seen = null, sound = lsGet('omabdo.staff.sound') === '1', tab = 'live', timer = null, alarm = null, ctx = null;
-  var LABEL = { new: 'جديد', accepted: 'مقبول', preparing: 'بيتحضر', ready: 'جاهز', out: 'مع المندوب', delivered: 'تم التسليم', cancelled: 'ملغي' };
-  var PAY = { card: 'كارت', wallet: 'محفظة', applepay: 'Apple Pay', googlepay: 'Google Pay', instapay: 'إنستاباي', cod: 'كاش عند الاستلام' };
+  var token = ls(TK), scope = null, branches = {}, orders = [], seen = null;
+  var sound = ls(SK) !== '0', unlocked = false, online = true, tab = 'live', stage = null, histQ = '', histF = 'all', timer = null, alarm = null, ctx = null, busy = {};
 
-  function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
-  function lsSet(k, v) { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch (e) {} }
+  var LABEL = { new: 'جديد', accepted: 'مقبول', preparing: 'بيتحضر', ready: 'جاهز', out: 'في الطريق', delivered: 'تم التسليم', cancelled: 'ملغي' };
+  var PAY = { card: 'كارت', wallet: 'محفظة إلكترونية', applepay: 'Apple Pay', googlepay: 'Google Pay', instapay: 'إنستاباي', cod: 'كاش' };
+  var STAGES = [
+    { k: 'new', ico: '🔔', t: 'جديد', st: ['new'] },
+    { k: 'cook', ico: '🍳', t: 'بيتحضر', st: ['accepted', 'preparing'] },
+    { k: 'ready', ico: '✅', t: 'جاهز', st: ['ready'] },
+    { k: 'out', ico: '🛵', t: 'في الطريق', st: ['out'] },
+  ];
+  var ACTION = { // what the big button does, and the server steps needed to get there
+    new: { label: '✅ قبول الطلب وبدء التحضير', steps: ['accepted', 'preparing'] },
+    accepted: { label: '✅ الطلب جاهز', steps: ['preparing', 'ready'] },
+    preparing: { label: '✅ الطلب جاهز', steps: ['ready'] },
+    ready: { label: '🛵 خرج للتوصيل', steps: ['out'] },
+    out: { label: '📦 تم التسليم للعميل', steps: ['delivered'] },
+  };
+  if (ls(FK) === '1') document.documentElement.classList.add('big');
+
+  function ls(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function lset(k, v) { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch (e) {} }
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function money(n) { return (Math.round(n * 100) / 100) + ' ج.م'; }
+  function stageOf(o) { return STAGES.filter(function (s) { return s.st.indexOf(o.kitchen) > -1; })[0]; }
+  function isLive(o) { return !!stageOf(o); }
+  function toast(m) { var t = $('#toast'); t.innerHTML = '<div>' + esc(m) + '</div>'; clearTimeout(toast.t); toast.t = setTimeout(function () { t.innerHTML = ''; }, 2600); }
   function api(path, opt) {
     opt = opt || {}; opt.headers = Object.assign({ 'Content-Type': 'application/json' }, token ? { Authorization: 'Bearer ' + token } : {}, opt.headers || {});
     return fetch(API + path, opt).then(function (r) { return r.json().catch(function () { return {}; }).then(function (b) { if (r.status === 401 && token) { logout(); } if (!r.ok) { var e = new Error(b.error || 'error'); e.code = b.error; throw e; } return b; }); });
   }
+  function parseItem(s) { var m = /^(.*) × (\d+) = ([\d.]+) ج\.م$/.exec(s); return m ? { n: m[1].trim(), q: m[2], p: m[3] } : { n: s, q: '', p: '' }; }
 
   // ---------- sound ----------
+  function unlock() { // browsers only allow sound after a tap: do it on the first tap anywhere
+    if (unlocked) return;
+    try { ctx = ctx || new (window.AudioContext || window.webkitAudioContext)(); if (ctx.state === 'suspended') ctx.resume(); unlocked = true; render(); manageAlarm(); } catch (e) {}
+  }
   function beep() {
-    if (!sound) return;
+    if (!sound || !unlocked) return;
     try {
-      ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
-      [880, 1175, 880].forEach(function (f, i) {
+      [880, 1175, 880, 1175].forEach(function (f, i) {
         var o = ctx.createOscillator(), g = ctx.createGain(); o.frequency.value = f; o.type = 'sine'; o.connect(g); g.connect(ctx.destination);
-        var t = ctx.currentTime + i * 0.22; g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.4, t + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.2); o.start(t); o.stop(t + 0.22);
+        var t = ctx.currentTime + i * 0.2; g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.5, t + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.18); o.start(t); o.stop(t + 0.2);
       });
     } catch (e) {}
   }
-  function manageAlarm() { // ring every 5s while any order is still "new"
-    var any = orders.some(function (o) { return o.kitchen === 'new'; });
-    if (any && sound && !alarm) alarm = setInterval(beep, 5000);
-    if ((!any || !sound) && alarm) { clearInterval(alarm); alarm = null; }
-    document.title = (any ? '(' + orders.filter(function (o) { return o.kitchen === 'new'; }).length + ') ' : '') + 'لوحة الطلبات · أم عبده';
+  function newCount() { return orders.filter(function (o) { return o.kitchen === 'new'; }).length; }
+  function manageAlarm() {
+    var n = newCount(), want = n > 0 && sound && unlocked;
+    if (want && !alarm) alarm = setInterval(beep, 6000);
+    if (!want && alarm) { clearInterval(alarm); alarm = null; }
+    document.title = (n ? '(' + n + ') 🔔 ' : '') + 'لوحة الطلبات · أم عبده';
   }
 
   // ---------- login ----------
   function showLogin(msg) {
-    app.innerHTML = '<div class="login"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="" style="display:none"><h1>🍽️ لوحة طلبات أم عبده</h1>' +
-      '<select id="br"><option value="tagamoa">فرع التجمع الخامس</option><option value="obour">فرع العبور</option><option value="admin">الإدارة (كل الفروع)</option></select>' +
-      '<input id="pw" type="password" placeholder="كلمة السر" autocomplete="current-password"><div class="err" id="err">' + esc(msg || '') + '</div><button class="btn big" id="go">دخول</button></div>';
-    var br = lsGet(BR); if (br) $('#br').value = br;
-    var submit = function () {
+    app.innerHTML = '<div class="login"><div class="box"><div style="font-size:3rem">🍽️</div><h1>لوحة طلبات أم عبده</h1><p>سجّل دخول الفرع عشان تستقبل الطلبات</p>' +
+      '<label for="br">الفرع</label><select id="br"><option value="tagamoa">فرع التجمع الخامس</option><option value="obour">فرع العبور</option><option value="admin">الإدارة (كل الفروع)</option></select>' +
+      '<label for="pw">كلمة السر</label><input id="pw" type="password" autocomplete="current-password" placeholder="اكتب كلمة سر الفرع">' +
+      '<div class="err" id="err">' + esc(msg || '') + '</div><button class="btn block" id="go">دخول</button></div></div>';
+    var b = ls(BR); if (b) $('#br').value = b;
+    function submit() {
+      $('#go').disabled = true;
       api('/login', { method: 'POST', body: JSON.stringify({ branch: $('#br').value, password: $('#pw').value }) }).then(function (r) {
-        token = r.token; lsSet(TK, token); lsSet(BR, $('#br').value); sound = true; lsSet('omabdo.staff.sound', '1'); seen = null; start();
-      }).catch(function (e) { $('#err').textContent = { wrong_password: 'كلمة السر غلط', not_configured: 'الفرع ده لسه ملوش كلمة سر على السيرفر', too_many_attempts: 'محاولات كتير، جرّب بعد شوية' }[e.code] || 'تعذر الدخول'; });
-    };
+        token = r.token; lset(TK, token); lset(BR, $('#br').value); seen = null; unlock(); start();
+      }).catch(function (e) {
+        $('#go').disabled = false;
+        $('#err').textContent = { wrong_password: 'كلمة السر غلط، جرّب تاني', not_configured: 'الفرع ده لسه ملوش كلمة سر على السيرفر', too_many_attempts: 'محاولات كتير. استنى شوية وجرّب تاني' }[e.code] || 'تعذر الدخول، اتأكد من الإنترنت';
+      });
+    }
     $('#go').onclick = submit; $('#pw').onkeydown = function (e) { if (e.key === 'Enter') submit(); };
   }
-  function logout() { token = null; lsSet(TK, null); clearInterval(timer); timer = null; if (alarm) { clearInterval(alarm); alarm = null; } showLogin(); }
+  function logout() { token = null; lset(TK, null); clearInterval(timer); timer = null; if (alarm) { clearInterval(alarm); alarm = null; } orders = []; showLogin(); }
 
   // ---------- data ----------
   function refresh() {
     return api('/orders').then(function (r) {
-      scope = r.scope; branches = r.branches; var prev = seen; orders = r.orders;
+      online = true; scope = r.scope; branches = r.branches; var prev = seen; orders = r.orders;
       var ids = {}; orders.forEach(function (o) { ids[o.id] = 1; });
-      if (prev) { var fresh = orders.filter(function (o) { return !prev[o.id] && o.kitchen === 'new'; }); if (fresh.length) { beep(); } }
-      seen = ids; render(); manageAlarm();
-    }).catch(function () {});
+      if (prev && orders.some(function (o) { return !prev[o.id] && o.kitchen === 'new'; })) { beep(); }
+      seen = ids; softRender(); manageAlarm();
+    }).catch(function () { online = false; softRender(); });
+  }
+  // Redraw only when something really changed, so taps are never lost to a redraw in the middle of a press.
+  var lastSig = '';
+  function softRender() {
+    var sig = orders.map(function (o) { return o.id + o.kitchen; }).join('|') + '#' + online + unlocked + sound + tab + stage;
+    if (sig !== lastSig) { lastSig = sig; render(); }
   }
   function start() { render(); refresh(); clearInterval(timer); timer = setInterval(refresh, 4000); }
-  function setStatus(id, kitchen) {
-    if (kitchen === 'cancelled') { var o = orders.find(function (x) { return x.id === id; }); if (!confirm('تأكيد إلغاء الطلب ' + id + '؟' + (o && o.paid ? '\nالطلب مدفوع أونلاين، لازم ترجّع الفلوس يدويًا.' : ''))) return; }
-    api('/orders/' + encodeURIComponent(id) + '/status', { method: 'POST', body: JSON.stringify({ kitchen: kitchen }) }).then(refresh).catch(function () { alert('تعذر تحديث الطلب، اتحدّث الصفحة وحاول تاني'); refresh(); });
+
+  function advance(id) {
+    var o = orders.find(function (x) { return x.id === id; }); if (!o || busy[id]) return;
+    var a = ACTION[o.kitchen]; if (!a) return;
+    busy[id] = true; render();
+    a.steps.reduce(function (p, s) { return p.then(function () { return api('/orders/' + encodeURIComponent(id) + '/status', { method: 'POST', body: JSON.stringify({ kitchen: s }) }); }); }, Promise.resolve())
+      .then(function () { toast(a.steps.slice(-1)[0] === 'delivered' ? 'تم تسليم الطلب ✓' : 'تم تحديث الطلب ✓'); })
+      .catch(function () { toast('تعذر التحديث. جرّب تاني'); })
+      .then(function () { delete busy[id]; return refresh(); });
+  }
+  function askCancel(id) {
+    var o = orders.find(function (x) { return x.id === id; }); if (!o) return;
+    var m = $('#modal'); m.classList.remove('hide');
+    m.innerHTML = '<div class="m"><div style="font-size:2.4rem">⚠️</div><h3>إلغاء الطلب #' + esc(id) + '؟</h3><p>' + (o.paid ? 'الطلب مدفوع أونلاين، لازم ترجّع الفلوس للعميل يدويًا.' : 'هيتلغي الطلب ومش هيتحضّر.') + '</p><div class="two"><button class="btn ghost" id="no">لأ، سيبه</button><button class="btn danger" id="yes">آه، إلغاء الطلب</button></div></div>';
+    $('#no').onclick = function () { m.classList.add('hide'); };
+    $('#yes').onclick = function () { m.classList.add('hide'); api('/orders/' + encodeURIComponent(id) + '/status', { method: 'POST', body: JSON.stringify({ kitchen: 'cancelled' }) }).then(function () { toast('تم إلغاء الطلب'); refresh(); }).catch(function () { toast('تعذر الإلغاء'); refresh(); }); };
   }
 
   // ---------- render ----------
   function ago(ts) { var m = Math.floor((Date.now() - ts) / 60000); return m < 1 ? 'دلوقتي' : m < 60 ? 'من ' + m + ' دقيقة' : 'من ' + Math.floor(m / 60) + ' س ' + (m % 60) + ' د'; }
-  function money(n) { return (Math.round(n * 100) / 100) + ' ج.م'; }
-  var NEXT = { new: ['accepted', 'قبول الطلب'], accepted: ['preparing', 'بدء التحضير'], preparing: ['ready', 'جاهز'], ready: ['out', 'خرج للتوصيل'], out: ['delivered', 'تم التسليم'] };
 
   function card(o) {
-    var late = o.kitchen !== 'out' && Date.now() - o.createdAt > 25 * 60000, n = NEXT[o.kitchen];
-    var c = o.customer || {}, map = o.location ? 'https://www.google.com/maps?q=' + o.location.lat + ',' + o.location.lng : 'https://www.google.com/maps/search/' + encodeURIComponent(c.address || '');
-    return '<div class="card ' + (o.kitchen === 'new' ? 'new' : '') + '"><div class="top"><span class="id">#' + esc(o.id) + (scope === 'admin' ? ' · ' + esc(branches[o.branch] || o.branch) : '') + '</span><span class="age ' + (late ? 'late' : '') + '">' + ago(o.createdAt) + '</span></div>' +
-      '<div class="kv"><b>' + esc(c.name) + '</b> · <a href="tel:' + esc(c.phone) + '">' + esc(c.phone) + '</a></div>' +
-      '<div class="kv">📍 ' + esc(c.address) + ' · <a href="' + esc(map) + '" target="_blank" rel="noopener">الخريطة</a></div>' +
-      (c.notes ? '<div class="kv">📝 <b>' + esc(c.notes) + '</b></div>' : '') +
-      '<div class="items">' + o.items.map(esc).join('<br>') + '</div>' +
-      '<div><b>' + money(o.total) + '</b> ' + (o.paymentMethod === 'cod' ? '<span class="pay cod">💵 حصّل ' + money(o.total) + ' كاش</span>' : '<span class="pay paid">✅ مدفوع · ' + esc(PAY[o.paymentMethod] || o.paymentMethod) + '</span>') + '</div>' +
-      '<div class="acts">' + (n ? '<button class="btn" data-a="' + n[0] + '" data-id="' + esc(o.id) + '">' + n[1] + '</button>' : '') +
-      '<button class="btn ghost" data-p="' + esc(o.id) + '">🖨️ طباعة</button>' +
-      (o.kitchen === 'new' || o.kitchen === 'accepted' || o.kitchen === 'preparing' ? '<button class="btn ghost" style="color:var(--red)" data-a="cancelled" data-id="' + esc(o.id) + '">إلغاء</button>' : '') + '</div></div>';
+    var c = o.customer || {}, st = stageOf(o), a = ACTION[o.kitchen], mins = Math.floor((Date.now() - o.createdAt) / 60000);
+    var cls = o.kitchen === 'out' ? '' : mins >= 25 ? 'late' : mins >= 12 ? 'warn' : '';
+    var map = o.location ? 'https://www.google.com/maps?q=' + o.location.lat + ',' + o.location.lng : 'https://www.google.com/maps/search/' + encodeURIComponent(c.address || '');
+    var items = o.items.map(function (s) { var i = parseItem(s); return '<div class="it"><span class="q">' + esc(i.q || '•') + '×</span><span class="n">' + esc(i.n) + '</span><span class="p">' + (i.p ? esc(i.p) + ' ج.م' : '') + '</span></div>'; }).join('');
+    var pay = o.paymentMethod === 'cod'
+      ? '<div class="money cash">💵 حصّل من العميل: ' + money(o.total) + '<small>الدفع كاش عند الاستلام</small></div>'
+      : '<div class="money paid">✅ مدفوع أونلاين (' + esc(PAY[o.paymentMethod] || o.paymentMethod) + ')<small>الإجمالي ' + money(o.total) + ' · متحصّلش أي فلوس من العميل</small></div>';
+    var canCancel = ['new', 'accepted', 'preparing'].indexOf(o.kitchen) > -1;
+    return '<div class="card ' + (o.kitchen === 'new' ? 'new' : '') + '" id="o-' + esc(o.id) + '"><div class="ch"><span class="id">#' + esc(o.id) + '</span>' + (scope === 'admin' ? '<span class="tag d" style="background:var(--gs);color:var(--gd)">' + esc(branches[o.branch] || o.branch) + '</span>' : '') + '<span class="when ' + cls + '">⏱ ' + ago(o.createdAt) + '</span></div>' +
+      '<div class="cb"><div class="who">👤 ' + esc(c.name) + '</div>' +
+      '<div class="row"><a class="chip" href="tel:' + esc(c.phone) + '">📞 اتصل ' + esc(c.phone) + '</a><a class="chip" href="' + esc(map) + '" target="_blank" rel="noopener">🗺️ افتح الخريطة</a></div>' +
+      '<div class="addr">📍 ' + esc(c.address) + '</div>' + (c.notes ? '<div class="note">📝 ملاحظة العميل: ' + esc(c.notes) + '</div>' : '') +
+      '<div class="items">' + items + '</div>' + pay + '</div>' +
+      '<div class="ca"><button class="act ' + st.k + '" data-adv="' + esc(o.id) + '"' + (busy[o.id] ? ' disabled' : '') + '>' + (busy[o.id] ? 'جاري التحديث…' : a.label) + '</button>' +
+      '<div class="sub"><button class="btn ghost sm" data-p="' + esc(o.id) + '">🖨️ طباعة للمطبخ</button>' + (canCancel ? '<button class="btn ghost sm" style="color:var(--red)" data-x="' + esc(o.id) + '">✖ إلغاء الطلب</button>' : '') + '</div></div></div>';
+  }
+
+  function live() {
+    var live = orders.filter(isLive).sort(function (a, b) { return a.createdAt - b.createdAt; });
+    if (!stage || !STAGES.some(function (s) { return s.k === stage; })) stage = 'new';
+    var narrow = window.innerWidth <= 1180;
+    var tabsHtml = '<div class="stages">' + STAGES.map(function (s) {
+      var n = live.filter(function (o) { return s.st.indexOf(o.kitchen) > -1; }).length;
+      return '<button data-st="' + s.k + '" class="' + (stage === s.k ? 'on' : '') + '" style="color:var(--' + s.k + ')"><small>' + s.ico + '</small>' + s.t + ' (' + n + ')</button>';
+    }).join('') + '</div>';
+    var cols = '<div class="board">' + STAGES.map(function (s) {
+      var list = live.filter(function (o) { return s.st.indexOf(o.kitchen) > -1; });
+      var hint = { new: 'مفيش طلبات جديدة دلوقتي.<br>أول ما يوصل طلب هيظهر هنا ويرن صوت تنبيه.', cook: 'مفيش طلبات بتتحضر.', ready: 'مفيش طلبات جاهزة.', out: 'مفيش طلبات في الطريق.' }[s.k];
+      return '<section class="col ' + s.k + (narrow && stage !== s.k ? ' hidden-stage' : '') + '"><h2>' + s.ico + ' ' + s.t + '<b>' + list.length + '</b></h2><div class="cards">' + (list.map(card).join('') || '<div class="empty">' + hint + '</div>') + '</div></section>';
+    }).join('') + '</div>';
+    return tabsHtml + cols;
+  }
+
+  function dayStart() { var d = new Date(); d.setHours(0, 0, 0, 0); return d.getTime(); }
+  function today() {
+    var t = dayStart(), list = orders.filter(function (o) { return o.createdAt >= t; }), ok = list.filter(function (o) { return o.kitchen !== 'cancelled'; });
+    var sum = function (a) { return a.reduce(function (s, o) { return s + o.total; }, 0); };
+    var cash = ok.filter(function (o) { return o.paymentMethod === 'cod'; }), onl = ok.filter(function (o) { return o.paymentMethod !== 'cod'; });
+    var methods = {}; ok.forEach(function (o) { var k = PAY[o.paymentMethod] || o.paymentMethod; methods[k] = (methods[k] || 0) + 1; });
+    var max = Math.max.apply(null, Object.keys(methods).map(function (k) { return methods[k]; }).concat([1]));
+    var bars = Object.keys(methods).map(function (k) { return '<div class="bar"><span style="min-width:120px">' + esc(k) + '</span><i style="width:' + Math.round(methods[k] / max * 55) + '%"></i><em>' + methods[k] + ' طلب</em></div>'; }).join('') || '<div class="empty">لسه مفيش طلبات النهاردة</div>';
+    var done = ok.filter(function (o) { return o.kitchen === 'delivered'; });
+    return '<div class="wrap"><div class="stats"><div class="stat hl"><span>إجمالي مبيعات النهاردة</span><b>' + money(sum(ok)) + '</b></div><div class="stat"><span>عدد الطلبات</span><b>' + ok.length + '</b></div>' +
+      '<div class="stat"><span>كاش لازم يتحصّل</span><b>' + money(sum(cash)) + '</b></div><div class="stat"><span>مدفوع أونلاين</span><b>' + money(sum(onl)) + '</b></div>' +
+      '<div class="stat"><span>تم تسليمها</span><b>' + done.length + '</b></div><div class="stat"><span>طلبات ملغية</span><b>' + (list.length - ok.length) + '</b></div></div>' +
+      '<div class="panel"><h3>طرق الدفع النهاردة</h3>' + bars + '</div></div>';
+  }
+
+  function histList() {
+    var q = histQ.trim().toLowerCase(), list = orders.filter(function (o) { return o.kitchen === 'delivered' || o.kitchen === 'cancelled'; })
+      .filter(function (o) { return histF === 'all' || o.kitchen === histF; })
+      .filter(function (o) { return !q || (o.id + ' ' + (o.customer.name || '') + ' ' + (o.customer.phone || '')).toLowerCase().indexOf(q) > -1; })
+      .sort(function (a, b) { return b.createdAt - a.createdAt; });
+    return list.map(function (o) {
+      return '<div class="h"><div class="main"><b>#' + esc(o.id) + '</b> · ' + esc(o.customer.name) + '<br><small>' + esc(o.customer.phone) + ' · ' + new Date(o.createdAt).toLocaleString('ar-EG') + '</small></div>' +
+        '<div><b>' + money(o.total) + '</b><br><small>' + esc(PAY[o.paymentMethod] || '') + '</small></div><span class="tag ' + (o.kitchen === 'delivered' ? 'd' : 'c') + '">' + LABEL[o.kitchen] + '</span><button class="btn ghost sm" data-p="' + esc(o.id) + '">🖨️</button></div>';
+    }).join('') || '<div class="empty">مفيش طلبات مطابقة</div>';
+  }
+  function hist() {
+    var f = function (k, t) { return '<button data-hf="' + k + '" class="' + (histF === k ? 'on' : '') + '">' + t + '</button>'; };
+    return '<div class="wrap"><div class="find"><input id="hq" type="search" placeholder="🔎 دوّر برقم الطلب أو اسم العميل أو موبايله" value="' + esc(histQ) + '">' + f('all', 'الكل') + f('delivered', 'تم التسليم') + f('cancelled', 'الملغي') + '</div><div id="hl">' + histList() + '</div></div>';
   }
 
   function render() {
     if (!token) return;
-    var title = scope === 'admin' ? 'كل الفروع' : 'فرع ' + (branches[scope] || '');
-    var live = orders.filter(function (o) { return ['new', 'accepted', 'preparing', 'ready', 'out'].indexOf(o.kitchen) > -1; }).sort(function (a, b) { return a.createdAt - b.createdAt; });
-    var cols = [['new', 'جديد'], ['accepted', 'مقبول'], ['preparing', 'بيتحضر'], ['ready', 'جاهز'], ['out', 'مع المندوب']];
-    var body;
-    if (tab === 'live') {
-      body = '<div class="board" style="grid-template-columns:repeat(' + cols.length + ',minmax(240px,1fr))">' + cols.map(function (c) {
-        var list = live.filter(function (o) { return o.kitchen === c[0]; });
-        return '<div class="col"><h2>' + c[1] + ' <span>' + list.length + '</span></h2>' + (list.map(card).join('') || '<div class="empty">—</div>') + '</div>';
-      }).join('') + '</div>';
-    } else {
-      var done = orders.filter(function (o) { return o.kitchen === 'delivered' || o.kitchen === 'cancelled'; });
-      var sum = done.filter(function (o) { return o.kitchen === 'delivered'; }).reduce(function (s, o) { return s + o.total; }, 0);
-      body = '<div class="hist"><p><b>' + done.length + '</b> طلب في السجل · إجمالي المسلَّم: <b>' + money(sum) + '</b></p><table><tr><th>الطلب</th><th>الوقت</th><th>العميل</th><th>الإجمالي</th><th>الدفع</th><th>الحالة</th><th></th></tr>' +
-        (done.map(function (o) { return '<tr><td>#' + esc(o.id) + '</td><td>' + new Date(o.createdAt).toLocaleString('ar-EG') + '</td><td>' + esc(o.customer.name) + '<br><small>' + esc(o.customer.phone) + '</small></td><td>' + money(o.total) + '</td><td>' + esc(PAY[o.paymentMethod] || '') + '</td><td>' + LABEL[o.kitchen] + '</td><td><button class="btn ghost" data-p="' + esc(o.id) + '">🖨️</button></td></tr>'; }).join('') || '<tr><td colspan="7" class="empty">لا يوجد طلبات سابقة</td></tr>') + '</table></div>';
-    }
-    app.innerHTML = '<header><b>🍽️ ' + esc(title) + '</b><div class="tabs"><button class="btn ' + (tab === 'live' ? 'on' : '') + '" data-t="live">الطلبات النشطة (' + live.length + ')</button><button class="btn ' + (tab === 'hist' ? 'on' : '') + '" data-t="hist">السجل</button></div><span class="sp"></span>' +
-      '<button class="btn ' + (sound ? 'on' : '') + '" id="snd">' + (sound ? '🔔 الصوت شغال' : '🔕 الصوت مقفول') + '</button><button class="btn" id="out">خروج</button></header>' + body;
+    lastSig = orders.map(function (o) { return o.id + o.kitchen; }).join('|') + '#' + online + unlocked + sound + tab + stage;
+    if (tab === 'hist' && $('#hl')) { $('#hl').innerHTML = histList(); return; }
+    var n = newCount(), title = scope === 'admin' ? 'كل الفروع' : 'فرع ' + (branches[scope] || '');
+    var notices = '';
+    if (!online) notices += '<div class="banner net">⚠️ مفيش اتصال بالإنترنت. الطلبات الجديدة مش هتظهر لحد ما الاتصال يرجع</div>';
+    if (sound && !unlocked) notices += '<div class="banner warn" data-unlock="1" style="cursor:pointer">🔕 صوت التنبيه مقفول. اضغط هنا مرة واحدة عشان يشتغل</div>';
+    if (n > 0 && tab === 'live') notices += '<div class="banner alert" data-goto="new">🔔 عندك ' + n + (n === 1 ? ' طلب جديد' : ' طلبات جديدة') + ' — اضغط لقبوله</div>';
+    var body = tab === 'live' ? live() : tab === 'today' ? today() : hist();
+    var liveN = orders.filter(isLive).length;
+    app.innerHTML = '<header><div class="top"><span class="brand">🍽️ ' + esc(title) + '</span><span class="pill"><i class="dot ' + (online ? '' : 'off') + '"></i>' + (online ? 'متصل' : 'مفيش اتصال') + '</span>' +
+      '<button class="pill ' + (sound ? 'on' : '') + '" id="snd">' + (sound ? '🔔 الصوت شغال' : '🔕 الصوت مقفول') + '</button><button class="pill" id="big" aria-label="تكبير الخط">أ+</button><button class="pill" id="out">خروج</button></div>' +
+      '<div class="tabs"><button data-t="live" class="' + (tab === 'live' ? 'on' : '') + '">📋 الطلبات الحالية' + (liveN ? '<span class="cnt">' + liveN + '</span>' : '') + '</button><button data-t="today" class="' + (tab === 'today' ? 'on' : '') + '">📊 ملخص النهاردة</button><button data-t="hist" class="' + (tab === 'hist' ? 'on' : '') + '">🗂️ السجل</button></div></header>' + notices + body;
   }
 
   function printTicket(id) {
     var o = orders.find(function (x) { return x.id === id; }); if (!o) return; var c = o.customer || {};
     $('#ticket').innerHTML = '<h3>أم عبده</h3><div style="text-align:center">' + esc(branches[o.branch] || '') + '</div><hr><div><b>#' + esc(o.id) + '</b> · ' + new Date(o.createdAt).toLocaleString('ar-EG') + '</div><hr>' +
-      o.items.map(function (i) { return '<div>' + esc(i) + '</div>'; }).join('') + '<hr><div>الإجمالي: <b>' + money(o.total) + '</b></div><div>' + (o.paymentMethod === 'cod' ? 'كاش عند الاستلام: حصّل ' + money(o.total) : 'مدفوع · ' + esc(PAY[o.paymentMethod] || '')) + '</div><hr>' +
+      o.items.map(function (i) { var p = parseItem(i); return '<div><b>' + esc(p.q) + '×</b> ' + esc(p.n) + '</div>'; }).join('') + '<hr><div>الإجمالي: <b>' + money(o.total) + '</b></div><div>' + (o.paymentMethod === 'cod' ? 'كاش عند الاستلام: حصّل ' + money(o.total) : 'مدفوع أونلاين · ' + esc(PAY[o.paymentMethod] || '')) + '</div><hr>' +
       '<div>' + esc(c.name) + '</div><div>' + esc(c.phone) + '</div><div>' + esc(c.address) + '</div>' + (c.notes ? '<div>ملاحظات: ' + esc(c.notes) + '</div>' : '');
     window.print();
   }
 
-  app.addEventListener('click', function (e) {
-    var t = e.target.closest('button'); if (!t) return;
-    if (t.dataset.a) setStatus(t.dataset.id, t.dataset.a);
+  document.addEventListener('click', function (e) {
+    unlock();
+    var t = e.target.closest('button,[data-unlock],[data-goto]'); if (!t) return;
+    if (t.dataset.adv) advance(t.dataset.adv);
+    else if (t.dataset.x) askCancel(t.dataset.x);
     else if (t.dataset.p) printTicket(t.dataset.p);
-    else if (t.dataset.t) { tab = t.dataset.t; render(); }
-    else if (t.id === 'snd') { sound = !sound; lsSet('omabdo.staff.sound', sound ? '1' : '0'); if (sound) beep(); render(); manageAlarm(); }
+    else if (t.dataset.t) { tab = t.dataset.t; render(); window.scrollTo(0, 0); }
+    else if (t.dataset.st) { stage = t.dataset.st; render(); }
+    else if (t.dataset.hf) { histF = t.dataset.hf; histQ = ($('#hq') || {}).value || histQ; app.querySelector('.wrap').outerHTML = hist(); }
+    else if (t.dataset.goto) { stage = 'new'; var el = document.querySelector('.card.new'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+    else if (t.dataset.unlock) { render(); }
+    else if (t.id === 'snd') { sound = !sound; lset(SK, sound ? '1' : '0'); if (sound) { unlock(); beep(); } render(); manageAlarm(); }
+    else if (t.id === 'big') { var on = document.documentElement.classList.toggle('big'); lset(FK, on ? '1' : '0'); }
     else if (t.id === 'out') logout();
   });
-  setInterval(function () { if (token && tab === 'live') render(); }, 30000); // refresh the "minutes ago" labels
+  document.addEventListener('input', function (e) { if (e.target.id === 'hq') { histQ = e.target.value; $('#hl').innerHTML = histList(); } });
+  window.addEventListener('resize', function () { if (token && tab === 'live') render(); });
+  setInterval(function () { if (token && tab === 'live') render(); }, 30000); // keep the "minutes ago" labels fresh
 
   if (token) start(); else showLogin();
 })();
