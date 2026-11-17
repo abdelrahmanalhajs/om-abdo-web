@@ -129,6 +129,8 @@ header{position:sticky;top:0;z-index:20;background:var(--gd);color:#fff}
   function mk(min,kitchen,pm){n++;var a=n%5,b=(n+2)%5,t=PRICE[a]+PRICE[b];return {id:'OA'+(1000+n*37).toString(16).toUpperCase()+'D'+n,branch:'tagamoa',kitchen:kitchen,createdAt:now-min*60000,paymentMethod:pm,paid:pm!=='cod',total:t,subtotal:t,fee:0,
     customer:{name:NAMES[n%5],phone:'0101234'+(5000+n*91),address:ST[n%5]+'، عمارة '+(n+2)+'، الدور '+(n%4+1),notes:n%2?'من غير بصل':''},location:{lat:30.0094,lng:31.5242},items:[ITEMS[a],ITEMS[b]]};}
   orders.push(mk(3,'new','cod'),mk(1,'new','card'),mk(9,'accepted','cod'),mk(14,'preparing','wallet'),mk(22,'ready','cod'),mk(31,'out','instapay'),mk(70,'delivered','cod'),mk(95,'delivered','card'),mk(120,'cancelled','cod'));
+  orders[0].coupon='OMABDO10';orders[0].discount=Math.round(orders[0].subtotal*10)/100;orders[0].total=orders[0].subtotal-orders[0].discount;
+  orders[1].coupon='WELCOME50';orders[1].discount=50;orders[1].total=orders[1].subtotal-50;
   var spawn=setInterval(function(){orders.push(mk(0,'new',['cod','card','applepay'][n%3]));if(n>14)clearInterval(spawn);},45000);
   var real=window.fetch.bind(window);
   function json(o,s){return Promise.resolve(new Response(JSON.stringify(o),{status:s||200,headers:{'Content-Type':'application/json'}}));}
@@ -269,9 +271,10 @@ header{position:sticky;top:0;z-index:20;background:var(--gd);color:#fff}
     var cls = o.kitchen === 'out' ? '' : mins >= 25 ? 'late' : mins >= 12 ? 'warn' : '';
     var map = o.location ? 'https://www.google.com/maps?q=' + o.location.lat + ',' + o.location.lng : 'https://www.google.com/maps/search/' + encodeURIComponent(c.address || '');
     var items = o.items.map(function (s) { var i = parseItem(s); return '<div class="it"><span class="q">' + esc(i.q || '•') + '×</span><span class="n">' + esc(i.n) + '</span><span class="p">' + (i.p ? esc(i.p) + ' ج.م' : '') + '</span></div>'; }).join('');
+    var disc = o.discount > 0 ? ' · 🏷️ خصم كوبون ' + esc(o.coupon) + ': -' + money(o.discount) : '';
     var pay = o.paymentMethod === 'cod'
-      ? '<div class="money cash">💵 حصّل من العميل: ' + money(o.total) + '<small>الدفع كاش عند الاستلام</small></div>'
-      : '<div class="money paid">✅ مدفوع أونلاين (' + esc(PAY[o.paymentMethod] || o.paymentMethod) + ')<small>الإجمالي ' + money(o.total) + ' · متحصّلش أي فلوس من العميل</small></div>';
+      ? '<div class="money cash">💵 حصّل من العميل: ' + money(o.total) + '<small>الدفع كاش عند الاستلام' + disc + '</small></div>'
+      : '<div class="money paid">✅ مدفوع أونلاين (' + esc(PAY[o.paymentMethod] || o.paymentMethod) + ')<small>الإجمالي ' + money(o.total) + ' · متحصّلش أي فلوس من العميل' + disc + '</small></div>';
     var canCancel = ['new', 'accepted', 'preparing'].indexOf(o.kitchen) > -1;
     return '<div class="card ' + (o.kitchen === 'new' ? 'new' : '') + '" id="o-' + esc(o.id) + '"><div class="ch"><span class="id">#' + esc(o.id) + '</span>' + (scope === 'admin' ? '<span class="tag d" style="background:var(--gs);color:var(--gd)">' + esc(branches[o.branch] || o.branch) + '</span>' : '') + '<span class="when ' + cls + '">⏱ ' + ago(o.createdAt) + '</span></div>' +
       '<div class="cb"><div class="who">👤 ' + esc(c.name) + '</div>' +
